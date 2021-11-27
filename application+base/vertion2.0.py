@@ -44,8 +44,7 @@ def RemplirListeDeroulantePokemon():
 
 def init():
     fene_info = tk.Toplevel()
-    fene_info = Canvas(fene_info, width = 550, height = 600, bg = 'white')
-    labelExample = tk.Label(newWindow, text = "New Window")
+    return fene_info
 
 def AffichezPokemon():
     sqliteConnection = connexion()
@@ -56,7 +55,6 @@ def AffichezPokemon():
     cursor.execute(sqlite_select_Query)
     #on place tout les enregistrements dans une variable record
     record = cursor.fetchall()
-    print(record)
     #la variable record est un tableau à plusieurs dimension, chaque case contient une information
 
     #on modifie la valeur de la StringVar "value_label_nom" avec une valeur du tableau
@@ -71,14 +69,12 @@ def AffichezPokemon():
 
     #construction du lien de l'image
     lien_image = "images/" + str(record[0][5])
-    print(lien_image)
     #affichage de l'iamge
     img2 = PhotoImage(file=lien_image)
     image_pokemon.configure(image=img2)
     image_pokemon.image = img2
     
     lien_image_type = "images/type/" + str(record[0][9]) +".gif"
-    print(lien_image_type)
     #affichage de l'iamge
     img2_type = PhotoImage(file=lien_image_type)
     image_pokemon_type.configure(image=img2_type)
@@ -86,17 +82,14 @@ def AffichezPokemon():
     
     axz=0
 
-    
-
-    print("SQLite Database Version is: ", record)
     #on ferme le curseur
     cursor.close()
     deconnexion(sqliteConnection)
 
 
 def ouvrir():
-    patryck = PhotoImage(file="Frame.gif")
-    item = can.create_image((550/2),(600/2) , image = patryck)
+    patryck = PhotoImage(file="images/Back/Framevert.gif")
+    item = can.create_image((550/2),(325/2) , image = patryck)
      
     #Rajouter cette ligne
     can.image = patryck
@@ -105,85 +98,117 @@ def ouvrir():
     
     axz=1
 
-def infos():
-    patrycbis = PhotoImage(file="Frame-evo.gif")
-    itembis = can.create_image((450/2)+50,(225/2)+50 , image = patrycbis)
+def infos(can_info,fene_info ):
+    patrycbis_back = PhotoImage(file="images/Back/Framevide.gif")
+    itembis_back = can_info.create_image((550/2),(325/2) , image = patrycbis_back)
      
     #Rajouter cette ligne
-    can.imagebis = patrycbis
+    can_info.imagebis_back = patrycbis_back
      
-    can.pack()
+    can_info.pack()
+    
+    patrycbis = PhotoImage(file="images/Back/Frame-stats.gif")
+    itembis = can_info.create_image((450/2)+50,(225/2)+50 , image = patrycbis)
+     
+    #Rajouter cette ligne
+    can_info.imagebis = patrycbis
+     
+    can_info.pack()
+    
+    
 
       
 #_____________________________PP__________________________________#
 fenetre = Tk()
 
-a=0
-can = Canvas(fenetre, width = 550, height = 600, bg = 'white')
+can = Canvas(fenetre, width = 550, height = 325, bg = 'white')
 ouvrir()
-infos()
-
-
 #bouton rechercher
-bouton_search= tk.Button(fenetre, text="Rechercher", command=init, bg = "black")
-bouton_search.place(x=292,y=434,width=150, height=30)
+def info_geo():
+    fene_info = init()
+    fene_info.geometry('550x325')
+    can_info = Canvas(fene_info, width = 550, height = 325, bg = 'white')
+    a=0
+    
+    infos(can_info,fene_info)
+    return a, can_info, fene_info
+
+def nombre(v):
+    global a
+    a=v
+
+print(a)
+
+b=1
+
 
 #_____________________________PP__________________________________#
+print(a)       
+photo = PhotoImage(file = r"images/Back/statsbtn.gif") 
+btn = tk.Button(fenetre, image=photo, command=lambda *args:nombre(0))
+btn.place(x=65,y=72,width=200, height=80)
 
-if a == 0:
+photot = PhotoImage(file = r"images/Back/rechercher.gif") 
+btnt = tk.Button(fenetre, image=photot)
+btnt.place(x=285,y=72,width=200, height=80)
+
+
+if a == 0 and b == 1:
+    a, can_info, fene_info = info_geo()
+    
     #liste deroulante
     tabPokemon=RemplirListeDeroulantePokemon()
-    listeDeroulantePokemon = Combobox(fenetre, values=tabPokemon)
+    listeDeroulantePokemon = Combobox(fene_info, values=tabPokemon)
     listeDeroulantePokemon.current(0)
     listeDeroulantePokemon.place(x=77,y=234,width=200, height=30)
 
 
     #bouton rechercher
-    bouton_search= tk.Button(fenetre, text="Rechercher", command=AffichezPokemon, bg = "black")
+    bouton_search= tk.Button(fene_info, text="Rechercher", command=AffichezPokemon, bg = "black")
     bouton_search.place(x=292,y=234,width=150, height=30)
 
     #nom
     value_label_nom = StringVar()
-    champ_label= tk.Label(fenetre,textvariable=value_label_nom, font=("Arial", 30),justify="right", bg="#D6C52D")
+    champ_label= tk.Label(fene_info,textvariable=value_label_nom, font=("Arial", 30),justify="right", bg="#D6C52D")
     champ_label.place(x=285,y=50,width=215, height=62)
     
     #hp
     value_label_hp = StringVar()
-    champ_label_hp= tk.Label(fenetre,textvariable=value_label_hp, font=("Arial", 15), bg="#A2CD93")
+    champ_label_hp= tk.Label(fene_info,textvariable=value_label_hp, font=("Arial", 15), bg="#A2CD93")
     champ_label_hp.place(x=52,y=55,width=55, height=20)
     
     #vitesse
     value_label_vitesse= StringVar()
-    champ_label_vitesse=tk.Label(fenetre,textvariable=value_label_vitesse, font=("Arial", 15), bg="#A2CD93")
+    champ_label_vitesse=tk.Label(fene_info,textvariable=value_label_vitesse, font=("Arial", 15), bg="#A2CD93")
     champ_label_vitesse.place(x=107,y=55,width=55, height=20)
     
     #attaque
     value_label_attaque = StringVar()
-    champ_label_attaque=tk.Label(fenetre,textvariable=value_label_attaque, font=("Arial", 10), bg="#A2CD93")
+    champ_label_attaque=tk.Label(fene_info,textvariable=value_label_attaque, font=("Arial", 10), bg="#A2CD93")
     champ_label_attaque.place(x=318,y=120,width=150, height=15)
     
     #defense
     value_label_defense = StringVar()
-    champ_label_defense=tk.Label(fenetre,textvariable=value_label_defense, font=("Arial", 10), bg="#A2CD93")
+    champ_label_defense=tk.Label(fene_info,textvariable=value_label_defense, font=("Arial", 10), bg="#A2CD93")
     champ_label_defense.place(x=318,y=145,width=150, height=15)
     
     #attaque_spe
     value_label_attaque_spe = StringVar()
-    champ_label_attaque_spe=tk.Label(fenetre,textvariable=value_label_attaque_spe, font=("Arial", 10), bg="#A2CD93")
+    champ_label_attaque_spe=tk.Label(fene_info,textvariable=value_label_attaque_spe, font=("Arial", 10), bg="#A2CD93")
     champ_label_attaque_spe.place(x=318,y=170,width=150, height=15)
     
     #defense_spe
     value_label_defense_spe = StringVar()
-    champ_label_defense_spe =tk.Label(fenetre,textvariable=value_label_defense_spe, font=("Arial", 10), bg="#A2CD93")
+    champ_label_defense_spe =tk.Label(fene_info,textvariable=value_label_defense_spe, font=("Arial", 10), bg="#A2CD93")
     champ_label_defense_spe.place(x=318,y=195,width=150, height=15)
     
     
     
-    image_pokemon = Label(fenetre, image="")
+    image_pokemon = Label(fene_info, image="")
     image_pokemon.place(x=50,y=88.19,width=93.62, height=93.62)
     
     
-    image_pokemon_type = tk.Label(fenetre, image="",bg="white")
+    image_pokemon_type = tk.Label(fene_info, image="",bg="white")
     image_pokemon_type.place(x=206,y=151,width=22, height=22)
 
 
