@@ -30,7 +30,7 @@ def RemplirListeDeroulantePokemon():
     sqliteConnection = connexion()
     cursor = sqliteConnection.cursor()
     #ecriture de la requéte
-    sqlite_select_Query = "select nom from pokemon;"
+    sqlite_select_Query = "select nom from pokemon ORDER BY nom ASC"
     #execution de la requéte
     cursor.execute(sqlite_select_Query)
     #on place tout les enregistrements dans une variable record
@@ -98,7 +98,7 @@ def AffichezListePokemon():
     sqliteConnection = connexion()
     cursor = sqliteConnection.cursor()
     #ecriture de la requéte
-    sqlite_select_Query = "SELECT idPokemon,nom,HP,libelle_type FROM pokemon INNER JOIN type  ON type.idType = pokemon.idType WHERE nom LIKE '%" + var_texte_recherche.get() + "%';"
+    sqlite_select_Query = "SELECT idPokemon,nom,HP,libelle_type FROM pokemon INNER JOIN type  ON type.idType = pokemon.idType WHERE nom LIKE '% ORDER BY nom ASC" + var_texte_recherche.get() + "%';"
     #execution de la requéte
     cursor.execute(sqlite_select_Query)
     #on place tout les enregistrements dans une variable record
