@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter.ttk import *
 import tkinter.font as font
 import sqlite3
+from tkinter import ttk
 
 class tabl:
     def __init__(self, typ, nom):
@@ -141,7 +142,7 @@ def ouvrir():
 
       
 #_____________________________PP__________________________________#
-fenetre = Tk()
+fenetre = tk.Tk()
 
 can = Canvas(fenetre, width = 1100, height = 600, bg = 'white')
 ouvrir()
@@ -167,7 +168,7 @@ if a == 0 and b == 1:
 
     #nom
     value_label_nom = StringVar()
-    champ_label= tk.Label(fenetre,textvariable=value_label_nom, font=("Arial", 25),justify="right", bg="#D6C52D")
+    champ_label= tk.Label(fenetre,textvariable=value_label_nom, font=("Arial", 30),justify="right", bg="#D6C52D")
     champ_label.place(x=285,y=50,width=167, height=62)
     
     #hp
@@ -235,8 +236,14 @@ photo_change = PhotoImage(file = r"images/Back/Change.gif")
 Button_change = tk.Button(fenetre, image=photo_change, command=choix_tabl_nom)
 Button_change.place(x=890,y=58,width=30, height=30)
 
-#création de la grille d'affichage (tableau)
-tree = Treeview(fenetre, columns=('HP', 'PV','Type'))
+style = ttk.Style(fenetre)
+style.theme_use("alt")
+style.configure("Treeview", 
+    bg="#A2CD93",
+    fieldbackground="#A2CD93", foreground="black")
+    
+
+tree = ttk.Treeview(fenetre, columns=('HP', 'PV','Type'))
  
  # Set the heading (Attribute Names)
 tree.heading('#0', text='Pokemon')
@@ -251,7 +258,39 @@ tree.column('#2',width=70, stretch=YES)
 tree.column('#3',width=70, stretch=YES)
 
 #placement du tableau
-tree.place(x=649,y=92,width=351, height=120)
+tree.place(x=649,y=92,width=351, height=103)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+#liste deroulante
+tabPokemon=RemplirListeDeroulantePokemon()
+listeDeroulantePokemon_perso1 = Combobox(fenetre, values=tabPokemon)
+listeDeroulantePokemon_perso1.current(0)
+listeDeroulantePokemon_perso1.place(x=50,y=327,width=150, height=30)
+
+#bouton de recherche
+bouton_affichez_pokemon_perso1=tk.Button(fenetre, text="OK", command=AffichezPokemon_tabl,bg = "#A2CD93")
+bouton_affichez_pokemon_perso1.place(x=200,y=327,width=56, height=30)
+
+#liste deroulante
+tabPokemon=RemplirListeDeroulantePokemon()
+listeDeroulantePokemon_perso2 = Combobox(fenetre, values=tabPokemon)
+listeDeroulantePokemon_perso2.current(0)
+listeDeroulantePokemon_perso2.place(x=312,y=327,width=150, height=30)
+
+#bouton de recherche
+bouton_affichez_pokemon_perso2=tk.Button(fenetre, text="OK", command=AffichezPokemon_tabl,bg = "#A2CD93")
+bouton_affichez_pokemon_perso2.place(x=256,y=327,width=56, height=30)
 
 fenetre.mainloop ()
