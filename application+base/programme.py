@@ -141,13 +141,21 @@ def AffichezTypePokemon():
     #deconnexion de la bdd
     deconnexion(sqliteConnection)
 
-
+def ouvrir():
+    patryck = PhotoImage(file="images/Back/Framevert.gif")
+    item = can.create_image((1100/2),(600/2) , image = patryck)
+     
+    #Rajouter cette ligne
+    can.image = patryck
+     
+    can.pack()
 
 #création de la fenetre Tkinter
 fenetre=Tk()
 #permet de modifier la taille de la fenétre
-fenetre.geometry("650x670")
-fenetre.configure(bg='#93a697')
+can = Canvas(fenetre, width = 1100, height = 600, bg = 'white')
+ouvrir()
+
 #On crée un label(lignedetexte) souhaitant labienvenue
 #Note:lepremier paramètre passé au constructeur de Label est notre fenétre
 

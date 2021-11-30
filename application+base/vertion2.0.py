@@ -162,22 +162,22 @@ if a == 0 and b == 1:
 
 
     #bouton rechercher
-    bouton_search= tk.Button(fenetre, text="Rechercher", command=AffichezPokemon, bg = "black")
+    bouton_search= tk.Button(fenetre, text="Rechercher", command=AffichezPokemon, bg = "#626DCB")
     bouton_search.place(x=292,y=234,width=150, height=30)
 
     #nom
     value_label_nom = StringVar()
-    champ_label= tk.Label(fenetre,textvariable=value_label_nom, font=("Arial", 30),justify="right", bg="#D6C52D")
-    champ_label.place(x=285,y=50,width=215, height=62)
+    champ_label= tk.Label(fenetre,textvariable=value_label_nom, font=("Arial", 25),justify="right", bg="#D6C52D")
+    champ_label.place(x=285,y=50,width=167, height=62)
     
     #hp
     value_label_hp = StringVar()
-    champ_label_hp= tk.Label(fenetre,textvariable=value_label_hp, font=("Arial", 15), bg="#A2CD93")
+    champ_label_hp= tk.Label(fenetre,textvariable=value_label_hp, font=("Arial", 13), bg="#A2CD93")
     champ_label_hp.place(x=52,y=55,width=55, height=20)
     
     #vitesse
     value_label_vitesse= StringVar()
-    champ_label_vitesse=tk.Label(fenetre,textvariable=value_label_vitesse, font=("Arial", 15), bg="#A2CD93")
+    champ_label_vitesse=tk.Label(fenetre,textvariable=value_label_vitesse, font=("Arial", 13), bg="#A2CD93")
     champ_label_vitesse.place(x=107,y=55,width=55, height=20)
     
     #attaque
@@ -220,10 +220,10 @@ tabl_type= tabl("xx","pv")
 
 #création d'une variable StringVar
 var_texte_recherche = StringVar()
-textBoxRecherche = Entry(fenetre, textvariable=var_texte_recherche)
+textBoxRecherche = tk.Entry(fenetre, textvariable=var_texte_recherche,bg = "#626DCB")
 textBoxRecherche.place(x=654,y=234,width=200, height=30)
 #bouton de recherche
-bouton_affichez_pokemon=Button(fenetre, text="Rechercher", command=AffichezPokemon_tabl)
+bouton_affichez_pokemon=tk.Button(fenetre, text="Rechercher", command=AffichezPokemon_tabl,bg = "#626DCB")
 bouton_affichez_pokemon.place(x=864,y=234,width=150, height=30)
 
 choix_tabl_nom()
