@@ -4,6 +4,7 @@ from tkinter.ttk import *
 import tkinter.font as font
 import sqlite3
 from tkinter import ttk
+from pages2 import *
 
 class tabl:
     def __init__(self, typ, nom):
@@ -24,7 +25,6 @@ def deconnexion(sqliteConnection):
    if (sqliteConnection):
        #fermeture de la co
             sqliteConnection.close()
-            print("The SQLite connection is closed")
 
 def RemplirListeDeroulantePokemon():
     sqliteConnection = connexion()
@@ -65,8 +65,6 @@ def choix_tabl_nom():
 
     
 def AffichezPokemon_tabl():
-    print(tabl_type.type)
-    
     sqliteConnection = connexion()
     cursor = sqliteConnection.cursor()
     #ecriture de la requéte
@@ -228,7 +226,6 @@ bouton_affichez_pokemon=tk.Button(fenetre, text="Rechercher", command=AffichezPo
 bouton_affichez_pokemon.place(x=864,y=234,width=150, height=30)
 
 choix_tabl_nom()
-print(tabl_type.type)
 
 bb= "type"
 
@@ -270,17 +267,94 @@ tree.place(x=649,y=92,width=351, height=103)
 
 
 
+class perso:
+    def __init__(self, id_name , nom, hp, att, defe,att_spe, defe_spe,typ, pv, game, vict, value):
+        self.id_name=id_name
+        self.nom=nom
+        self.hp=hp
+        self.att=att
+        self.defe=defe
+        self.att_spe=att_spe
+        self.defe_spe=defe_spe
+        self.typ=typ
+        self.pv=pv
+        self.game=game
+        self.vict=vict
+        self.value=value
 
 
+
+
+perso1 = perso(0,"none",0,0,0,0,0,"none",0,0,0,0)
+perso2 = perso(0,"none",0,0,0,0,0,"none",0,0,0,0)
+
+def affichage():
+    if perso2.value == 1 and perso1.value ==1 :
+        if perso1.id_name == perso2.id_name :
+            champ_label_egu.place(x=50,y=394,width=450, height=90)
+        else:
+            champ_label_egu.place(x=100000000,y=394,width=450, height=90)
+        
+        champ_label_hp_combat = xx(1)
+        print(champ_label_hp_combat)
+        
+    
+    
+def perso1():
+    sqliteConnection = connexion()
+    cursor = sqliteConnection.cursor()
+    sqlite_select_Query = "SELECT idPokemon,nom,HP,attaque,defense,attaque_spe,defense_spe,libelle_type,pv ,game ,victoire FROM pokemon INNER JOIN type  ON type.idType = pokemon.idType WHERE nom ='" + listeDeroulantePokemon_perso1.get() + "';"
+    cursor.execute(sqlite_select_Query)
+    record = cursor.fetchall()
+    infod = ["id_name","nom", "hp", "att", "defe","att_spe", "defe_spe","typ", "pv", "game", "vict"]
+    perso1.id_name = record[0][0]
+    perso1.value = 1
+    affichage()
+        
+def perso2():
+    sqliteConnection = connexion()
+    cursor = sqliteConnection.cursor()
+    sqlite_select_Query = "SELECT idPokemon,nom,HP,attaque,defense,attaque_spe,defense_spe,libelle_type,pv ,game ,victoire FROM pokemon INNER JOIN type  ON type.idType = pokemon.idType WHERE nom ='" + listeDeroulantePokemon_perso2.get() + "';"
+    cursor.execute(sqlite_select_Query)
+    record = cursor.fetchall()
+    infod = ["nom", "hp", "att", "defe","att_spe", "defe_spe","typ", "pv", "game", "vict"]
+    perso2.id_name = record[0][0]
+    perso2.value = 1
+    affichage()    
+
+perso2.value = 0
+perso1.value = 0
+perso2.id_name = 0
+perso1.id_name = 0
+perso2.nom = 0
+perso1.nom = 0
+perso2.hp = 0
+perso1.hp = 0
+perso2.att = 0
+perso1.att = 0
+perso2.defe = 0
+perso1.defe = 0
+perso2.att_spe = 0
+perso1.att_spe = 0
+perso2.defe_spe = 0
+perso1.defe_spe = 0
+perso2.typ = 0
+perso1.typ = 0
+perso2.pv = 0
+perso1.pv = 0
+perso2.game = 0
+perso1.game = 0
+perso2.vict = 0
+perso1.vict = 0
 
 #liste deroulante
-tabPokemon=RemplirListeDeroulantePokemon()
-listeDeroulantePokemon_perso1 = Combobox(fenetre, values=tabPokemon)
+tabPokemon_perso1 =RemplirListeDeroulantePokemon()
+listeDeroulantePokemon_perso1 = Combobox(fenetre, values=tabPokemon_perso1)
 listeDeroulantePokemon_perso1.current(0)
 listeDeroulantePokemon_perso1.place(x=50,y=327,width=150, height=30)
 
 #bouton de recherche
-bouton_affichez_pokemon_perso1=tk.Button(fenetre, text="OK", command=AffichezPokemon_tabl,bg = "#A2CD93")
+bouton_affichez_pokemon_perso1=tk.Button(fenetre, text="OK", command=perso1 ,bg = "#A2CD93")
 bouton_affichez_pokemon_perso1.place(x=200,y=327,width=56, height=30)
 
 #liste deroulante
@@ -290,7 +364,11 @@ listeDeroulantePokemon_perso2.current(0)
 listeDeroulantePokemon_perso2.place(x=312,y=327,width=150, height=30)
 
 #bouton de recherche
-bouton_affichez_pokemon_perso2=tk.Button(fenetre, text="OK", command=AffichezPokemon_tabl,bg = "#A2CD93")
+bouton_affichez_pokemon_perso2=tk.Button(fenetre, text="OK", command=perso2,bg = "#A2CD93")
 bouton_affichez_pokemon_perso2.place(x=256,y=327,width=56, height=30)
 
+
+
+value_label_egu = StringVar()
+champ_label_egu= tk.Label(fenetre,text="Slectionne deux Pokemone diférents", font=("Arial", 30),justify="right", bg="#D6C52D")
 fenetre.mainloop ()
