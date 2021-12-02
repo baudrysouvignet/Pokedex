@@ -165,7 +165,7 @@ if a == 0 and b == 1:
 
     #nom
     value_label_nom = StringVar()
-    champ_label= tk.Label(fenetre,textvariable=value_label_nom, font=("Arial", 30),justify="right", bg="#D6C52D")
+    champ_label= tk.Label(fenetre,textvariable=value_label_nom, font=("Arial", 25),justify="right", bg="#D6C52D")
     champ_label.place(x=285,y=50,width=167, height=62)
     
     #hp
@@ -208,8 +208,11 @@ if a == 0 and b == 1:
     image_pokemon_type.place(x=206,y=152,width=22, height=22)
 
 
-
- 
+def selectItem(a):
+    curItam = tree.focus()
+    r=(tree.item(curItam))
+    listeDeroulantePokemon.set(r['text'])
+    AffichezPokemon()
 """
 Partie recherche et affichage du tableau`
 """
@@ -255,6 +258,7 @@ tree.column('#3',width=70, stretch=YES)
 
 #placement du tableau
 tree.place(x=649,y=92,width=351, height=103)
+tree.bind('<ButtonRelease-1>', selectItem)
 
 
 
@@ -370,5 +374,5 @@ bouton_affichez_pokemon_perso2.place(x=256,y=327,width=56, height=30)
 
 value_label_egu = StringVar()
 champ_label_egu= tk.Label(fenetre,text="Slectionne deux Pokemone diférents", font=("Arial", 30),justify="right", bg="#D6C52D")
-
+fenetre.resizable(False,False)
 fenetre.mainloop ()
