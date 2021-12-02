@@ -4,7 +4,6 @@ from tkinter.ttk import *
 import tkinter.font as font
 import sqlite3
 from tkinter import ttk
-from pages2 import *
 
 class tabl:
     def __init__(self, typ, nom):
@@ -22,7 +21,7 @@ def connexion():
 """<summary>Fonction de connexion à la bdd</summary>
 """
 def deconnexion(sqliteConnection):
-   if (sqliteConnection):
+   if (sqliteConnection): 
        #fermeture de la co
             sqliteConnection.close()
 
@@ -68,7 +67,7 @@ def AffichezPokemon_tabl():
     sqliteConnection = connexion()
     cursor = sqliteConnection.cursor()
     #ecriture de la requéte
-    sqlite_select_Query = "SELECT idPokemon,nom,HP,pv,libelle_type FROM pokemon INNER JOIN type  ON type.idType = pokemon.idType WHERE "+ tabl_type.type +" LIKE '%" + var_texte_recherche.get() + "%';"
+    sqlite_select_Query = "SELECT idPokemon,nom,HP,pv,libelle_type FROM pokemon INNER JOIN type  ON type.idType = pokemon.idType WHERE "+ tabl_type.type +" LIKE '%" + var_texte_recherche.get() + "%' ORDER BY "+tabl_type.type +" ASC"
     #execution de la requéte
     cursor.execute(sqlite_select_Query)
     #on place tout les enregistrements dans une variable record
@@ -141,7 +140,7 @@ def ouvrir():
       
 #_____________________________PP__________________________________#
 fenetre = tk.Tk()
-
+fenetre.title("Pokedex")
 can = Canvas(fenetre, width = 1100, height = 600, bg = 'white')
 ouvrir()
 
@@ -371,4 +370,5 @@ bouton_affichez_pokemon_perso2.place(x=256,y=327,width=56, height=30)
 
 value_label_egu = StringVar()
 champ_label_egu= tk.Label(fenetre,text="Slectionne deux Pokemone diférents", font=("Arial", 30),justify="right", bg="#D6C52D")
+
 fenetre.mainloop ()
