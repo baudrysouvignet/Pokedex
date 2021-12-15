@@ -223,6 +223,7 @@ tabl_type= tabl("xx","pv")
 var_texte_recherche = StringVar()
 textBoxRecherche = tk.Entry(fenetre, textvariable=var_texte_recherche,bg = "#626DCB")
 textBoxRecherche.place(x=654,y=234,width=200, height=30)
+
 #bouton de recherche
 bouton_affichez_pokemon=tk.Button(fenetre, text="Rechercher", command=AffichezPokemon_tabl,bg = "#626DCB")
 bouton_affichez_pokemon.place(x=864,y=234,width=150, height=30)
