@@ -421,6 +421,11 @@ Button_change_2 = tk.Label(master, image=photo_change_2 ,bg="white")
 Button_change_2.place(x=250,y=365,width=80, height=80)
 Button_change_2.bind("<Button>",lambda e: NewWindow("Profil", master))
 
+photo_change_3 = PhotoImage(file = "images/btn/Btn-3.gif") #choix de l'image de bg
+Button_change_3 = tk.Label(master, image=photo_change_2 ,bg="white")
+Button_change_3.place(x=70,y=365,width=80, height=80)
+Button_change_3.bind("<Button>",lambda e: NewWindow("Profil", master))
+
 def tete():
     lien_image_tete = 'tts/'+dresseur_tete.poke+'-Intro.gif'
     #affichage de l'iamge
