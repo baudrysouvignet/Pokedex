@@ -255,10 +255,10 @@ tree.heading('#3', text='Type')
 tree.column('#0',width=150, stretch=YES)
 tree.column('#1',width=30, stretch=YES)
 tree.column('#2',width=70, stretch=YES)
-tree.column('#3',width=70, stretch=YES)
+tree.column('#3',width=73, stretch=YES)
 
 #placement du tableau
-tree.place(x=649,y=92,width=351, height=103)
+tree.place(x=0,y=92,width=353, height=265)
 tree.bind('<ButtonRelease-1>', selectItem)
 
 
