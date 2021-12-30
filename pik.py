@@ -5,7 +5,8 @@ import tkinter.font as font
 import sqlite3
 from tkinter import ttk
 import datetime
-
+import random
+        
 class tabl:
     def __init__(self, typ, nom):
         self.type=typ
@@ -39,29 +40,77 @@ class NewWindow(Toplevel):
                 photo_tete.image = img2_type
         def changer_filtre(event):
                 choix_tabl_nom(self)
+        if  self.info != "Arene":
+            def changertete(event):
                 
-        def changertete(event):
-            
-                lien_image_type_2 = 'tts/'+dresseur_tete.poke+'-'+self.info+'.gif'
-                if dresseur_tete.poke == "tetepika":
-                    dresseur_tete.poke = "teteevo"
-                else:
-                    dresseur_tete.poke = "tetepika"
-                tete()
-                tete_page()
-        def tete_page():
-            lien_image_tete_page = 'tts/'+dresseur_tete.poke+'-'+self.info+'.gif'
-                #affichage de l'iamge
-            img2_tete_page = PhotoImage(file=lien_image_tete_page)
-            image_pokemon_tete_page.configure(image=img2_tete_page)
-            image_pokemon_tete_page.image = img2_tete_page
-                
-        image_pokemon_tete_page = tk.Label(self, image="",bg="white")
-        image_pokemon_tete_page.place(x=146,y=35,width=110.53, height=100)
-        tete_page()
+                    lien_image_type_2 = 'tts/'+dresseur_tete.poke+'-'+self.info+'.gif'
+                    if dresseur_tete.poke == "tetepika":
+                        dresseur_tete.poke = "teteevo"
+                    else:
+                        dresseur_tete.poke = "tetepika"
+                    tete()
+                    tete_page()
+            def tete_page():
+                lien_image_tete_page = 'tts/'+dresseur_tete.poke+'-'+self.info+'.gif'
+                    #affichage de l'iamge
+                img2_tete_page = PhotoImage(file=lien_image_tete_page)
+                image_pokemon_tete_page.configure(image=img2_tete_page)
+                image_pokemon_tete_page.image = img2_tete_page
+                    
+            image_pokemon_tete_page = tk.Label(self, image="",bg="white")
+            image_pokemon_tete_page.place(x=146,y=35,width=110.53, height=100)
+            tete_page()
         """bouton_search= tk.Button(self, text="Rechercher", command=changertete, bg = "white")
         bouton_search.place(x=0,y=510,width=130, height=30)"""
         #crétion specialisé des fenetre
+        
+        def recupdonnes():
+            sqlite_select_Query = "SELECT idDresseur,nom,nbr_comb,nbr_vict,date,compagnon FROM dresseur "
+            #execution de la requéte
+            cursor.execute(sqlite_select_Query)
+            #on place tout les enregistrements dans une variable record
+            record = cursor.fetchall()
+                
+            value_label_combats.set("Combats: " + str(record[0][2]))
+            value_label_vict.set("Victoires: " + str(record[0][3]))
+            value_label_date.set(str(record[0][4]))
+            if record[0][4]== "0":
+                date = datetime.date.today()
+                sqlite_select_Query = "UPDATE dresseur SET date = REPLACE(date, '"+(record[0][4])+"', '"+str(date)+"') WHERE date LIKE '%"+record[0][4]+"%'"
+                cursor.execute(sqlite_select_Query)
+                #on place tout les enregistrements dans une variable record
+                record = cursor.fetchall()
+                sqliteConnection.commit()
+                    
+                    
+            return record
+                
+        def combat():
+            sqlite_select_Query = "SELECT idDresseur,nom,nbr_comb,nbr_vict,date,compagnon FROM dresseur "
+            #execution de la requéte
+            cursor.execute(sqlite_select_Query)
+            #on place tout les enregistrements dans une variable record
+            record = cursor.fetchall()
+            a = int(record[0][2])+1
+            sqlite_select_Query = "UPDATE dresseur SET nbr_comb = REPLACE(nbr_comb, '"+(record[0][2])+"', '"+str(a)+"') WHERE nbr_comb LIKE '%"+record[0][2]+"%'"
+            cursor.execute(sqlite_select_Query)
+            #on place tout les enregistrements dans une variable record
+            record = cursor.fetchall()
+            sqliteConnection.commit()
+                
+        def vict():
+            sqlite_select_Query = "SELECT idDresseur,nom,nbr_comb,nbr_vict,date,compagnon FROM dresseur "
+            #execution de la requéte
+            cursor.execute(sqlite_select_Query)
+            #on place tout les enregistrements dans une variable record
+            record = cursor.fetchall()
+            a = int(record[0][3])+1
+            sqlite_select_Query = "UPDATE dresseur SET nbr_vict = REPLACE(nbr_vict, '"+(record[0][3])+"', '"+str(a)+"') WHERE nbr_vict LIKE '%"+record[0][3]+"%'"
+            cursor.execute(sqlite_select_Query)
+            #on place tout les enregistrements dans une variable record
+            record = cursor.fetchall()
+            sqliteConnection.commit()
+            
         if self.info == "Pokedex":
             #hp
             value_label_hp = StringVar()
@@ -170,54 +219,13 @@ class NewWindow(Toplevel):
             sqliteConnection = connexion()
             cursor = sqliteConnection.cursor()
             
-            def recupdonnes():
-                sqlite_select_Query = "SELECT idDresseur,nom,nbr_comb,nbr_vict,date,compagnon FROM dresseur "
-                #execution de la requéte
-                cursor.execute(sqlite_select_Query)
-                #on place tout les enregistrements dans une variable record
-                record = cursor.fetchall()
-                
-                value_label_combats.set("Combats: " + str(record[0][2]))
-                value_label_vict.set("Victoires: " + str(record[0][3]))
-                value_label_date.set(str(record[0][4]))
-                if record[0][4]== "0":
-                    date = datetime.date.today()
-                    sqlite_select_Query = "UPDATE dresseur SET date = REPLACE(date, '"+(record[0][4])+"', '"+str(date)+"') WHERE date LIKE '%"+record[0][4]+"%'"
-                    cursor.execute(sqlite_select_Query)
-                    #on place tout les enregistrements dans une variable record
-                    record = cursor.fetchall()
-                    sqliteConnection.commit()
-                return record
-                
-            def combat():
-                record = recupdonnes()
-                a = int(record[0][2])+1
-                print(a)
-                sqlite_select_Query = "UPDATE dresseur SET nbr_comb = REPLACE(nbr_comb, '"+(record[0][2])+"', '"+str(a)+"') WHERE nbr_comb LIKE '%"+record[0][2]+"%'"
-                cursor.execute(sqlite_select_Query)
-                #on place tout les enregistrements dans une variable record
-                record = cursor.fetchall()
-                sqliteConnection.commit()
-                recupdonnes()
-                
-            def vict():
-                record = recupdonnes()
-                a = int(record[0][3])+1
-                print(a)
-                sqlite_select_Query = "UPDATE dresseur SET nbr_vict = REPLACE(nbr_vict, '"+(record[0][3])+"', '"+str(a)+"') WHERE nbr_vict LIKE '%"+record[0][3]+"%'"
-                cursor.execute(sqlite_select_Query)
-                #on place tout les enregistrements dans une variable record
-                record = cursor.fetchall()
-                sqliteConnection.commit()
-                recupdonnes()
-            
             def afficher_compa():
                 record = recupdonnes()
                 value_label_comp.set("Compagnon: " + str(record[0][5]))
                 record = record[0][5]
                 sqliteConnection = connexion()
                 cursor = sqliteConnection.cursor()
-                sqlite_select_Query = "SELECT idPokemon,nom,HP,attaque,defense,url_image,attaque_spe,defense_spe,vitesse,libelle_type FROM pokemon INNER JOIN type  ON type.idType = pokemon.idType WHERE nom ='" + record + "';"
+                sqlite_select_Query = "SELECT idPokemon,nom,HP,attaque,defense,url_image,attaque_spe,defense_spe,vitesse,libelle_type,pv FROM pokemon INNER JOIN type  ON type.idType = pokemon.idType WHERE nom ='" + record + "';"
                 cursor.execute(sqlite_select_Query)
                 record = cursor.fetchall()
                 record = record[0][5]
@@ -230,7 +238,6 @@ class NewWindow(Toplevel):
             def modifier_compa():
                 global listeDeroulantePokemon
                 record = recupdonnes()
-                print(listeDeroulantePokemon_comp.get())
                 sqlite_select_Query = "UPDATE dresseur SET compagnon = REPLACE(compagnon, '"+(record[0][5])+"', '"+listeDeroulantePokemon_comp.get()+"') WHERE compagnon LIKE '%"+record[0][5]+"%'"
                 cursor.execute(sqlite_select_Query)
                 #on place tout les enregistrements dans une variable record
@@ -279,6 +286,143 @@ class NewWindow(Toplevel):
             
             recupdonnes()
             afficher_compa()
+            
+        elif self.info == "Arene":
+            sqliteConnection = connexion()
+            cursor = sqliteConnection.cursor()
+            
+            def info_comp():
+                sqlite_select_Query = "SELECT idDresseur,nom,nbr_comb,nbr_vict,date,compagnon FROM dresseur "
+                cursor.execute(sqlite_select_Query)
+                record = cursor.fetchall()
+                sqlite_select_Query = "SELECT idPokemon,nom,HP,attaque,defense,url_image,attaque_spe,defense_spe,vitesse,libelle_type,pv FROM pokemon INNER JOIN type  ON type.idType = pokemon.idType WHERE nom ='" + record[0][5] + "';"
+                cursor.execute(sqlite_select_Query)
+                record = cursor.fetchall()
+                
+                lien_image_change = 'images/'+record[0][5]
+                img2_change = PhotoImage(file=lien_image_change)
+                image_pokemon_change.configure(image=img2_change)
+                image_pokemon_change.image = img2_change
+            
+                return record
+            
+            def choix_pc():
+                sqlite_select_Query = "SELECT idPokemon FROM pokemon "
+                cursor.execute(sqlite_select_Query)
+                record = cursor.fetchall()
+                
+                tag = str(random.randint(0,len(record)))
+                sqlite_select_Query = "SELECT idPokemon,nom,HP,attaque,defense,url_image,attaque_spe,defense_spe,vitesse,libelle_type,pv FROM pokemon INNER JOIN type  ON type.idType = pokemon.idType WHERE idPokemon ='" + str(tag) + "';"
+                cursor.execute(sqlite_select_Query)
+                record = cursor.fetchall()
+                
+                lien_image_pc = 'images/'+record[0][5]
+                img2_pc = PhotoImage(file=lien_image_pc)
+                image_pokemon_pc.configure(image=img2_pc)
+                image_pokemon_pc.image = img2_pc
+                
+                return record
+            
+            def fight(info1_pv,info2_pv,info1,info2):
+                print("a")
+                if info1_pv > 0 and info2_pv > 0:
+                    if random.randint(0,2)==2:# attaque perso2
+                        if random.randint(0,2)==2:
+                            info1_pv = info1_pv - info2[0][6]
+                        else :
+                            info1_pv = info1_pv - info2[0][3]
+                    if info1_pv != info1[0][10]:
+                        if random.randint(0,2)==2:# def perso2
+                            if random.randint(0,2)==2:
+                                info1_pv = info1_pv + info1[0][7]
+                            else :
+                                info1_pv = info1_pv + info1[0][4]
+                        if info1_pv > info1[0][10]:#equilibre pour eviter demesure
+                            info1_pv = info1[0][10]
+                    
+                    
+                    if random.randint(0,2)==2:# attaque perso2
+                        if random.randint(0,2)==2:
+                            info2_pv = int(info2_pv) - int(info1[0][6])
+                        else :
+                            info2_pv = int(info2_pv) - int(info1[0][3])
+                    if info2_pv != info2[0][10]:
+                        if random.randint(0,2)==2:# def perso2
+                            if random.randint(0,2)==2:
+                                info2_pv = info2_pv + info2[0][7]
+                            else :
+                                info2_pv = info2_pv + info2[0][4]
+                        if info2_pv > info2[0][10]:#equilibre pour eviter demesure
+                            info2_pv = info2[0][10]
+                    fight(info1_pv,info2_pv,info1,info2)
+                else:
+                    combat()
+                    if info2_pv < info1_pv:
+                        vict()
+                        lien_image_pc = 'backs/Rectangle-moi.gif'
+                        img2_pc = PhotoImage(file=lien_image_pc)
+                        image_victoire_2.configure(image=img2_pc)
+                        image_victoire_2.image = img2_pc
+                        
+                        lien_image_pc = 'backs/transp-autre.gif'
+                        img2_pc = PhotoImage(file=lien_image_pc)
+                        image_victoire_1.configure(image=img2_pc)
+                        image_victoire_1.image = img2_pc
+                    else :
+                        
+                        lien_image_pc = 'backs/transp-moi.gif'
+                        img2_pc = PhotoImage(file=lien_image_pc)
+                        image_victoire_2.configure(image=img2_pc)
+                        image_victoire_2.image = img2_pc
+                        
+                        lien_image_pc = 'backs/Rectangle-autre.gif'
+                        img2_pc = PhotoImage(file=lien_image_pc)
+                        image_victoire_1.configure(image=img2_pc)
+                        image_victoire_1.image = img2_pc
+                    info2_pv = info1[0][10]+info2[0][10]
+            def reset():
+                info1 = info_comp()
+                info1_pv = info1[0][10]
+                info2 = choix_pc()
+                info2_pv = info2[0][10]
+                lien_image_pc = 'backs/transp-autre.gif'
+                img2_pc = PhotoImage(file=lien_image_pc)
+                image_victoire_1.configure(image=img2_pc)
+                image_victoire_1.image = img2_pc
+                        
+                lien_image_pc = 'backs/transp-moi.gif'
+                img2_pc = PhotoImage(file=lien_image_pc)
+                image_victoire_2.configure(image=img2_pc)
+                image_victoire_2.image = img2_pc     
+            
+            image_victoire_1 = tk.Label(self, image="",bg="white")
+            image_victoire_1.place(x=0,y=200,width=400, height=69)
+            
+            image_victoire_2 = tk.Label(self, image="",bg="white")
+            image_victoire_2.place(x=0,y=266,width=400, height=69)
+            
+            image_pokemon_change = tk.Label(self, image="",bg="white")
+            image_pokemon_change.place(x=100,y=335,width=200, height=200)
+            
+            image_pokemon_pc = tk.Label(self, image="",bg="white")
+            image_pokemon_pc.place(x=100,y=0,width=200, height=200)
+            
+            reset()
+            def lancer():
+                info1 = info_comp()
+                info1_pv = info1[0][10]
+                info2 = choix_pc()
+                info2_pv = info2[0][10]
+                fight(info1_pv,info2_pv,info1,info2)
+            
+            bouton_affichez_pokemon=tk.Button(self, text="Lancer", command=lancer,bg = "white")
+            bouton_affichez_pokemon.place(x=0,y=270,width=100, height=25)
+            
+            bouton_changer_pokemon=tk.Button(self, text="Changer",bg = "white")
+            bouton_changer_pokemon.place(x=300,y=505,width=100, height=30)
+            bouton_changer_pokemon.bind("<Button>",lambda e: NewWindow("Profil", master))
+            
+                
             
 tabl_type= tabl("xx","pv")         
 
@@ -336,7 +480,7 @@ def AffichezPokemon(listeDeroulantePokemon,value_label_hp,value_label_vitesse,va
     sqliteConnection = connexion()
     cursor = sqliteConnection.cursor()
     #ecriture de la requéte, on récupére le contenu de la listeDeroulante avec la fonction .get()
-    sqlite_select_Query = "SELECT idPokemon,nom,HP,attaque,defense,url_image,attaque_spe,defense_spe,vitesse,libelle_type FROM pokemon INNER JOIN type  ON type.idType = pokemon.idType WHERE nom ='" + listeDeroulantePokemon + "';"
+    sqlite_select_Query = "SELECT idPokemon,nom,HP,attaque,defense,url_image,attaque_spe,defense_spe,vitesse,libelle_type,pv FROM pokemon INNER JOIN type  ON type.idType = pokemon.idType WHERE nom ='" + listeDeroulantePokemon + "';"
     #execution de la requéte
     cursor.execute(sqlite_select_Query)
     #on place tout les enregistrements dans une variable record
@@ -422,9 +566,9 @@ Button_change_2.place(x=250,y=365,width=80, height=80)
 Button_change_2.bind("<Button>",lambda e: NewWindow("Profil", master))
 
 photo_change_3 = PhotoImage(file = "images/btn/Btn-3.gif") #choix de l'image de bg
-Button_change_3 = tk.Label(master, image=photo_change_2 ,bg="white")
+Button_change_3 = tk.Label(master, image=photo_change_3 ,bg="white")
 Button_change_3.place(x=70,y=365,width=80, height=80)
-Button_change_3.bind("<Button>",lambda e: NewWindow("Profil", master))
+Button_change_3.bind("<Button>",lambda e: NewWindow("Arene", master))
 
 def tete():
     lien_image_tete = 'tts/'+dresseur_tete.poke+'-Intro.gif'
